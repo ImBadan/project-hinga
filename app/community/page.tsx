@@ -5,6 +5,7 @@ import { supabase } from "@/lib/supabase";
 
 export default function CommunityPage() {
   const [content, setContent] = useState("");
+  const [nickname, setNickname] = useState("");
   const [posts, setPosts] = useState<any[]>([]);
   const [adviceContent, setAdviceContent] = useState("");
   const [adviceCategory, setAdviceCategory] = useState("💛 Comfort");
@@ -30,10 +31,11 @@ export default function CommunityPage() {
     await supabase.from("posts").insert([
       {
         content,
+        nickname: nickname || "Anonymous",
       },
     ]);
 
-    setContent("");
+    setNickname("");
     fetchPosts();
   }
 
@@ -63,6 +65,14 @@ export default function CommunityPage() {
         {/* CREATE POST */}
         <div className="bg-white/70 backdrop-blur-md border border-white/30 shadow-xl rounded-3xl p-6 mb-10">
 
+        <input
+          type="text"
+          value={nickname}
+          onChange={(e) => setNickname(e.target.value)}
+          placeholder="Nickname (optional)"
+          className="w-full mb-4 bg-white/60 rounded-2xl p-4 outline-none text-[#24345A]"
+        />
+
           <textarea
             value={content}
             onChange={(e) => setContent(e.target.value)}
@@ -90,6 +100,14 @@ export default function CommunityPage() {
             >
 
               {/* POST CONTENT */}
+              <div className="mb-3">
+
+                <h3 className="font-semibold text-[#1f3261]">
+                  {post.nickname}
+                </h3>
+
+              </div>
+
               <p className="text-lg leading-relaxed">
                 {post.content}
               </p>

@@ -2,72 +2,128 @@ import Link from "next/link";
 
 export default function Home() {
   return (
-    <main className="relative w-full min-h-screen bg-[#f8f5ef] overflow-hidden">
+    <main className="relative w-full min-h-screen overflow-hidden bg-[#f8f5ef]">
 
       {/* BACKGROUND IMAGE */}
       <img
         src="/hero.png"
         alt="Project Hinga"
-        className="absolute inset-0 w-full h-full object-cover"
+        className="
+          absolute inset-0
+          w-full h-full
+          object-contain
+          object-top
+          bg-[#f8f5ef]
+          pointer-events-none
+        "
       />
 
-      {/* NAVIGATION */}
-      {/* NAVIGATION */}
-      <nav className="absolute top-0 left-0 w-full flex items-center justify-between px-6 md:px-12 py-6">
+      {/* ========================= */}
+      {/* MOBILE NAVBAR */}
+      {/* ========================= */}
 
-      {/* CENTER MENU */}
-      <div className="absolute left-1/2 -translate-x-1/2 flex gap-6 md:gap-10 text-sm md:text-base font-medium text-[#24345A]">
+      <div className="flex md:hidden justify-between items-center px-4 py-4 relative z-20">
 
-        <a href="#">Home</a>
-        <a href="#">About</a>
-        <a href="#">Mental Health</a>
-        <a href="#">Resources</a>
-
-      </div>
-
-      {/* RIGHT BUTTON */}
-      <div className="ml-auto">
+        <img
+          src="/logo.png"
+          alt="Project Hinga"
+          className="w-24"
+        />
 
         <Link
           href="/community"
-          className="bg-[#1f3261] text-white px-4 md:px-6 py-2 md:py-3 rounded-full font-semibold hover:opacity-90 transition text-sm md:text-base"
+          className="
+            bg-[#1f3261]
+            text-white
+            px-4 py-2
+            rounded-full
+            text-sm
+            font-semibold
+          "
         >
-          Join The Movement
+          Join
         </Link>
 
       </div>
 
-      </nav>
+      {/* ========================= */}
+      {/* DESKTOP NAVBAR */}
+      {/* ========================= */}
 
-      {/* SHARE BUTTON */}
-      <div className="absolute left-[6%] bottom-[18%]">
+      <div
+        className="
+          hidden md:flex
+          absolute
+          top-[3%]
+          left-1/2
+          -translate-x-1/2
+          gap-10
+          text-[#1f3261]
+          font-medium
+          z-20
+        "
+      >
+        <a href="#">Home</a>
+        <a href="#">About</a>
+        <a href="#">Mental Health</a>
+        <a href="#">Resources</a>
+      </div>
+
+      {/* DESKTOP JOIN BUTTON */}
+
+      <Link
+        href="/community"
+        className="
+          hidden md:flex
+          absolute
+          top-[2%]
+          right-[3%]
+          z-20
+
+          bg-[#1f3261]
+          text-white
+          px-8 py-4
+          rounded-full
+          font-semibold
+          hover:opacity-90
+          transition
+        "
+      >
+        Join The Movement
+      </Link>
+
+      {/* SHARE YOUR VOICE BUTTON */}
 
       <Link
         href="/community"
         className="
           absolute
-          bottom-[30%]
-          left-[10%]
+          z-20
+
+          bottom-[16%]
+          left-[8%]
+
+          md:bottom-[13%]
+          md:left-[5%]
 
           bg-[#1f3261]
           text-white
 
-          px-8 py-4
+          px-6 py-3
+          md:px-8 md:py-4
+
           rounded-full
           font-semibold
 
+          text-sm
+          md:text-lg
+
           hover:opacity-90
           transition
-
-          whitespace-nowrap
-          min-w-[220px]
-          text-center
         "
       >
         Share Your Voice
       </Link>
-
-      </div>
 
     </main>
   );

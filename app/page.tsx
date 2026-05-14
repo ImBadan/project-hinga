@@ -23,7 +23,7 @@ export default function Home() {
         {/* JOIN BUTTON */}
         <Link
           href="/community"
-          className="absolute top-6 right-40 bg-[#1f3261] text-white px-8 py-4 rounded-full font-semibold z-50 hover:opacity-90 transition"
+          className="absolute top-6 right-45 bg-[#1f3261] text-white px-8 py-4 rounded-full font-semibold z-50 hover:opacity-90 transition"
         >
           Join The Movement
         </Link>

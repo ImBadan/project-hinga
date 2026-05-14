@@ -8,6 +8,7 @@ export default function CommunityPage() {
   const [posts, setPosts] = useState<any[]>([]);
   const [adviceContent, setAdviceContent] = useState("");
   const [adviceCategory, setAdviceCategory] = useState("💛 Comfort");
+  const [openPostId, setOpenPostId] = useState<number | null>(null);
 
   async function fetchPosts() {
     const { data } = await supabase
@@ -92,72 +93,91 @@ export default function CommunityPage() {
               <p className="text-lg leading-relaxed">
                 {post.content}
               </p>
-              
-              {/* SUPPORT SECTION */}
-              <div className="mt-6 space-y-3">
+              <div className="mt-6 flex items-center gap-6">
 
-                <select
-                  value={adviceCategory}
-                  onChange={(e) => setAdviceCategory(e.target.value)}
-                  className="w-full bg-white rounded-2xl p-3 outline-none"
-                >
-                  <option>💛 Comfort</option>
-                  <option>🧠 Advice</option>
-                  <option>🙏 Prayer</option>
-                  <option>🌱 Encouragement</option>
-                </select>
-
-                <textarea
-                  value={adviceContent}
-                  onChange={(e) => setAdviceContent(e.target.value)}
-                  placeholder="Send support..."
-                  className="w-full bg-white rounded-2xl p-4 outline-none resize-none"
-                />
-
+                {/* TOGGLE SUPPORT */}
                 <button
-                  onClick={async () => {
-                    if (!adviceContent.trim()) return;
-
-                    await supabase.from("advice").insert([
-                      {
-                        post_id: post.id,
-                        category: adviceCategory,
-                        content: adviceContent,
-                      },
-                    ]);
-
-                    setAdviceContent("");
-                    fetchPosts();
-                  }}
-                  className="bg-pink-400 text-white px-5 py-3 rounded-2xl hover:opacity-90 transition"
+                  onClick={() =>
+                    setOpenPostId(openPostId === post.id ? null : post.id)
+                  }
+                  className="text-[#1f3261] font-medium text-sm hover:underline"
                 >
-                  Send Support
+                  💬 View Support ({post.advice?.length || 0})
                 </button>
 
               </div>
-                {/* SUPPORT COMMENTS */}
+
+            {openPostId === post.id && (
+              <>
+
+                {/* SUPPORT SECTION */}
                 <div className="mt-6 space-y-3">
 
-                {post.advice?.map((item: any) => (
-
-                  <div
-                    key={item.id}
-                    className="bg-white border border-gray-200 rounded-2xl p-4"
+                  <select
+                    value={adviceCategory}
+                    onChange={(e) => setAdviceCategory(e.target.value)}
+                    className="w-full bg-white rounded-2xl p-3 outline-none"
                   >
+                    <option>💛 Comfort</option>
+                    <option>🧠 Advice</option>
+                    <option>🙏 Prayer</option>
+                    <option>🌱 Encouragement</option>
+                  </select>
 
-                    <p className="text-sm font-semibold text-[#233876] mb-2">
-                      {item.category}
-                    </p>
+                  <textarea
+                    value={adviceContent}
+                    onChange={(e) => setAdviceContent(e.target.value)}
+                    placeholder="Send support..."
+                    className="w-full bg-white rounded-2xl p-4 outline-none resize-none"
+                  />
 
-                    <p className="text-gray-700">
-                      {item.content}
-                    </p>
+                  <button
+                    onClick={async () => {
+                      if (!adviceContent.trim()) return;
 
-                  </div>
+                      await supabase.from("advice").insert([
+                        {
+                          post_id: post.id,
+                          category: adviceCategory,
+                          content: adviceContent,
+                        },
+                      ]);
 
-                ))}
+                      setAdviceContent("");
+                      fetchPosts();
+                    }}
+                    className="bg-pink-400 text-white px-5 py-3 rounded-2xl hover:opacity-90 transition"
+                  >
+                    Send Support
+                  </button>
 
                 </div>
+
+                  {/* SUPPORT COMMENTS */}
+                  <div className="mt-6 space-y-3">
+
+                  {post.advice?.map((item: any) => (
+
+                    <div
+                      key={item.id}
+                      className="bg-white border border-gray-200 rounded-2xl p-4"
+                    >
+
+                      <p className="text-sm font-semibold text-[#233876] mb-2">
+                        {item.category}
+                      </p>
+
+                      <p className="text-gray-700">
+                        {item.content}
+                      </p>
+
+                    </div>
+
+                  ))}
+
+                  </div>
+                </>
+              )}
               {/* FOOTER */}
               <div className="flex items-center justify-between mt-6">
 

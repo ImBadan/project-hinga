@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 
 export default function Home() {
-  const [content, setContent] = useState("");
+  const [category, setCategory] = useState("💛 Comfort");
   const [posts, setPosts] = useState<any[]>([]);
 
   async function fetchPosts() {
@@ -24,6 +24,7 @@ export default function Home() {
     await supabase.from("posts").insert([
       {
         content,
+        category,
       },
     ]);
 
@@ -48,6 +49,17 @@ export default function Home() {
         </p>
 
         <div className="bg-zinc-900 rounded-2xl p-4 mb-8">
+        <select
+        value={category}
+        onChange={(e) => setCategory(e.target.value)}
+        className="w-full mb-4 bg-black rounded-xl p-3 outline-none"
+      >
+        <option>💛 Comfort</option>
+        <option>🧠 Advice</option>
+        <option>🙏 Prayer</option>
+        <option>💬 Relatable</option>
+        <option>🌱 Encouragement</option>
+      </select>
           <textarea
             value={content}
             onChange={(e) => setContent(e.target.value)}
@@ -69,6 +81,10 @@ export default function Home() {
             key={post.id}
             className="bg-zinc-900 rounded-2xl p-4"
           >
+            <p className="text-sm text-pink-400 mb-2">
+              {post.category}
+            </p>
+
             <p>{post.content}</p>
           
             <div className="flex items-center justify-between mt-4">

@@ -66,18 +66,63 @@ export default function Home() {
         <div className="space-y-4">
           {posts.map((post) => (
             <div
-              key={post.id}
-              className="bg-zinc-900 rounded-2xl p-4"
-            >
-              <p>{post.content}</p>
+            key={post.id}
+            className="bg-zinc-900 rounded-2xl p-4"
+          >
+            <p>{post.content}</p>
+          
+            <div className="flex items-center justify-between mt-4">
 
-              <p className="text-xs text-gray-500 mt-2">
+            <div className="flex items-center gap-3">
+
+              <button
+                onClick={async () => {
+                  await supabase
+                    .from("posts")
+                    .update({
+                      likes: (post.likes || 0) + 1,
+                    })
+                    .eq("id", post.id);
+
+                  fetchPosts();
+                }}
+                className="text-pink-500 hover:text-pink-400"
+              >
+                ❤️
+              </button>
+
+              <span className="text-sm text-gray-400">
+                {post.likes || 0}
+              </span>
+
+            </div>
+
+            <div className="flex items-center gap-4">
+
+              <p className="text-xs text-gray-500">
                 {new Date(post.created_at).toLocaleString()}
               </p>
+
+              <button
+                onClick={async () => {
+                  await supabase
+                    .from("posts")
+                    .delete()
+                    .eq("id", post.id);
+
+                  fetchPosts();
+                }}
+                className="text-red-500 text-sm hover:text-red-400"
+              >
+                Delete
+              </button>
+
             </div>
+
+          </div>
+          </div>
           ))}
         </div>
-
       </div>
     </main>
   );

@@ -57,8 +57,11 @@ export default function Home() {
         ">
           <a href="#">Home</a>
           <a href="#">About</a>
+          <a href="#">Our Mission</a>
           <a href="#">Mental Health</a>
+          <a href="#">Get Involved</a>
           <a href="#">Resources</a>
+          <a href="#">Contact</a>
         </div>
 
         {/* DESKTOP BUTTON */}
@@ -96,13 +99,15 @@ export default function Home() {
         )}
         {/* HERO CONTENT */}
         <section className="
-          flex-1
-          flex
-          items-center
-          px-6
-          md:px-12
-          lg:px-20
-        ">
+            flex-1
+            flex
+            items-start
+            px-6
+            md:px-12
+            lg:px-20
+            pt-10
+            md:pt-20
+          ">
 
           <div className="max-w-2xl">
 

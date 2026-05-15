@@ -185,7 +185,7 @@ export default function CommunityPage() {
 
                 <div
                   key={post.id}
-                  className="bg-white/70 backdrop-blur-md border border-white/30 shadow-lg rounded-3xl p-6"
+                  className="bg-white/70 backdrop-blur-md border border-white/30 shadow-lg rounded-3xl p-6 overflow-hidden"
                 >
 
                   {/* POST CONTENT */}
@@ -197,7 +197,13 @@ export default function CommunityPage() {
 
                   </div>
 
-                  <p className="text-lg leading-relaxed">
+                  <p className="
+                    text-lg
+                    leading-relaxed
+                    break-words
+                    whitespace-pre-wrap
+                    overflow-hidden
+                  ">
                     {post.content}
                   </p>
                   <div className="mt-6 flex items-center gap-6">
@@ -267,14 +273,27 @@ export default function CommunityPage() {
 
                         <div
                           key={item.id}
-                          className="bg-white border border-gray-200 rounded-2xl p-4"
+                          className="
+                          bg-white
+                          border
+                          border-gray-200
+                          rounded-2xl
+                          p-4
+                          overflow-hidden
+                        "
                         >
 
                           <p className="text-sm font-semibold text-[#233876] mb-2">
                             {item.category}
                           </p>
 
-                          <p className="text-gray-700">
+                          <p className="
+                            text-gray-700
+                            break-words
+                            whitespace-pre-wrap
+                            overflow-hidden
+                            leading-relaxed
+                          ">
                             {item.content}
                           </p>
 

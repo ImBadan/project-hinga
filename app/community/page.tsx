@@ -10,6 +10,7 @@ export default function CommunityPage() {
   const [adviceContent, setAdviceContent] = useState("");
   const [adviceCategory, setAdviceCategory] = useState("💛 Comfort");
   const [openPostId, setOpenPostId] = useState<number | null>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   async function fetchPosts() {
     const { data } = await supabase
@@ -43,9 +44,18 @@ export default function CommunityPage() {
     fetchPosts();
   }, []);
 
+  useEffect(() => {
+    const admin = localStorage.getItem("hinga_admin");
+  
+    if (admin === "true") {
+      setIsAdmin(true);
+    }
+
+  }, []);
   return (
     <main className="min-h-screen bg-[#F8F5EF] text-[#24345A] px-6 py-10">
       <div className="absolute top-6 left-6 md:left-10 z-50">
+
         <img
           src="/logo.png"
           alt="Project Hinga"
@@ -67,8 +77,31 @@ export default function CommunityPage() {
             z-0
           "
         />
+        <div className="relative z-20">
 
-        <div className="relative z-0">
+        {isAdmin && (
+        <button
+          onClick={() => {
+            localStorage.removeItem("hinga_admin");
+            window.location.reload();
+          }}
+            className="
+              fixed
+              top-6
+              right-6
+              bg-red-500
+              text-white
+              px-4
+              py-2
+              rounded-full
+              z-50
+              hover:opacity-90
+              transition
+            "
+          >
+            Logout
+          </button>
+        )}
 
         <nav className="
           w-full
@@ -287,19 +320,22 @@ export default function CommunityPage() {
                         {new Date(post.created_at).toLocaleString()}
                       </p>
 
-                      <button
-                        onClick={async () => {
-                          await supabase
-                            .from("posts")
-                            .delete()
-                            .eq("id", post.id);
+                      {isAdmin && (
+                        
+                    <button
+                      onClick={async () => {
+                        await supabase
+                          .from("posts")
+                          .delete()
+                          .eq("id", post.id);
 
-                          fetchPosts();
-                        }}
-                        className="text-red-500 text-sm hover:text-red-400"
-                      >
-                        Delete
-                      </button>
+                        fetchPosts();
+                      }}
+                      className="text-red-500 text-sm hover:text-red-400"
+                    >
+                      Delete
+                    </button>
+                  )}
 
                     </div>
 

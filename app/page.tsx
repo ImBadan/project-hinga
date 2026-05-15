@@ -1,6 +1,13 @@
+"use client";
+
 import Link from "next/link";
+import { Menu, X } from "lucide-react";
+import { useState } from "react";
 
 export default function Home() {
+
+  const [menuOpen, setMenuOpen] = useState(false);
+
   return (
     <main className="relative min-h-screen overflow-hidden bg-[#f8f5ef]">
 
@@ -26,53 +33,67 @@ export default function Home() {
 
         {/* NAVBAR */}
         <nav className="
-          flex
-          items-center
-          justify-between
-          px-6
-          md:px-12
-          py-6
+        flex
+        items-center
+        justify-between
+        px-6
+        md:px-12
+        py-6
+      ">
+
+        {/* LOGO */}
+        <img
+          src="/logo.png"
+          alt="Project Hinga"
+          className="w-28 md:w-40"
+        />
+
+        {/* DESKTOP NAV */}
+        <div className="
+          hidden md:flex
+          gap-10
+          text-[#1f3261]
+          font-medium
         ">
+          <a href="#">Home</a>
+          <a href="#">About</a>
+          <a href="#">Mental Health</a>
+          <a href="#">Resources</a>
+        </div>
 
-          {/* LOGO */}
-          <img
-            src="/logo.png"
-            alt="Project Hinga"
-            className="w-28 md:w-40"
-          />
+        {/* DESKTOP BUTTON */}
+        <Link
+          href="/community"
+          className="
+            hidden md:block
+            bg-[#1f3261]
+            text-white
+            px-5
+            py-3
+            rounded-full
+            font-semibold
+            hover:opacity-90
+            transition
+          "
+        >
+          Join The Movement
+        </Link>
 
-          {/* CENTER NAV */}
-          <div className="
-            hidden md:flex
-            gap-10
-            text-[#1f3261]
-            font-medium
-          ">
-            <a href="#">Home</a>
-            <a href="#">About</a>
-            <a href="#">Mental Health</a>
-            <a href="#">Resources</a>
+        {/* MOBILE MENU BUTTON */}
+        <button
+          className="md:hidden text-[#1f3261]"
+          onClick={() => setMenuOpen(!menuOpen)}
+        >
+          {menuOpen ? <X size={32} /> : <Menu size={32} />}
+        </button>
+
+      </nav>
+        {/* MOBILE MENU */}
+        {menuOpen && (
+          <div>
+            ...
           </div>
-
-          {/* BUTTON */}
-          <Link
-            href="/community"
-            className="
-              bg-[#1f3261]
-              text-white
-              px-5
-              py-3
-              rounded-full
-              font-semibold
-              hover:opacity-90
-              transition
-            "
-          >
-            Join The Movement
-          </Link>
-
-        </nav>
-
+        )}
         {/* HERO CONTENT */}
         <section className="
           flex-1

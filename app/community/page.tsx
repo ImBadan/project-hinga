@@ -122,7 +122,11 @@ export default function CommunityPage() {
           </a>
 
           <a href="#" className="hover:opacity-70 transition">
-            About
+            About Us
+          </a>
+
+          <a href="#" className="hover:opacity-70 transition">
+            Our Mission
           </a>
 
           <a href="#" className="hover:opacity-70 transition">
@@ -130,7 +134,15 @@ export default function CommunityPage() {
           </a>
 
           <a href="#" className="hover:opacity-70 transition">
+            Get Involved
+          </a>
+
+          <a href="#" className="hover:opacity-70 transition">
             Resources
+          </a>
+
+          <a href="#" className="hover:opacity-70 transition">
+            Contact Us
           </a>
 
         </nav>

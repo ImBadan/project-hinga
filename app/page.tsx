@@ -56,12 +56,12 @@ export default function Home() {
           font-medium
         ">
           <a href="#">Home</a>
-          <a href="#">About</a>
+          <a href="#">About Us</a>
           <a href="#">Our Mission</a>
           <a href="#">Mental Health</a>
           <a href="#">Get Involved</a>
           <a href="#">Resources</a>
-          <a href="#">Contact</a>
+          <a href="#">Contact Us</a>
         </div>
 
         {/* DESKTOP BUTTON */}
@@ -93,8 +93,62 @@ export default function Home() {
       </nav>
         {/* MOBILE MENU */}
         {menuOpen && (
-          <div>
-            ...
+          <div
+            className="
+              md:hidden
+              fixed
+              top-0
+              left-0
+              w-full
+              h-screen
+              bg-[#f8f5ef]/95
+              backdrop-blur-sm
+              z-50
+              flex
+              flex-col
+              items-center
+              justify-center
+              gap-8
+              text-2xl
+              font-semibold
+              text-[#1f3261]
+            "
+          >
+
+            <a href="#" onClick={() => setMenuOpen(false)}>
+              Home
+            </a>
+
+            <a href="#" onClick={() => setMenuOpen(false)}>
+              About Us
+            </a>
+
+            <a href="#" onClick={() => setMenuOpen(false)}>
+              Our Mission
+            </a>
+
+            <a href="#" onClick={() => setMenuOpen(false)}>
+              Mental Health
+            </a>
+
+            <a href="#" onClick={() => setMenuOpen(false)}>
+              Resources
+            </a>
+
+            <Link
+              href="/community"
+              className="
+                bg-[#1f3261]
+                text-white
+                px-8
+                py-4
+                rounded-full
+              "
+              onClick={() => setMenuOpen(false)}
+            >
+              Join The Movement
+            </Link>
+
           </div>
         )}
         {/* HERO CONTENT */}

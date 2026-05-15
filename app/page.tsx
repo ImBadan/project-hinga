@@ -2,128 +2,149 @@ import Link from "next/link";
 
 export default function Home() {
   return (
-    <main className="relative w-full min-h-screen overflow-hidden bg-[#f8f5ef]">
+    <main className="relative min-h-screen overflow-hidden bg-[#f8f5ef]">
 
       {/* BACKGROUND IMAGE */}
       <img
         src="/hero.png"
         alt="Project Hinga"
         className="
-          absolute inset-0
-          w-full h-full
-          object-contain
-          object-top
-          bg-[#f8f5ef]
-          pointer-events-none
+          absolute
+          inset-0
+          w-full
+          h-full
+          object-cover
+          object-center
         "
       />
 
-      {/* ========================= */}
-      {/* MOBILE NAVBAR */}
-      {/* ========================= */}
+      {/* OVERLAY */}
+      <div className="absolute inset-0 bg-black/5" />
 
-      <div className="flex md:hidden justify-between items-center px-4 py-4 relative z-20">
+      {/* CONTENT */}
+      <div className="relative z-20 min-h-screen flex flex-col">
 
-        <img
-          src="/logo.png"
-          alt="Project Hinga"
-          className="w-24"
-        />
+        {/* NAVBAR */}
+        <nav className="
+          flex
+          items-center
+          justify-between
+          px-6
+          md:px-12
+          py-6
+        ">
 
-        <Link
-          href="/community"
-          className="
-            bg-[#1f3261]
-            text-white
-            px-4 py-2
-            rounded-full
-            text-sm
-            font-semibold
-          "
-        >
-          Join
-        </Link>
+          {/* LOGO */}
+          <img
+            src="/logo.png"
+            alt="Project Hinga"
+            className="w-28 md:w-40"
+          />
+
+          {/* CENTER NAV */}
+          <div className="
+            hidden md:flex
+            gap-10
+            text-[#1f3261]
+            font-medium
+          ">
+            <a href="#">Home</a>
+            <a href="#">About</a>
+            <a href="#">Mental Health</a>
+            <a href="#">Resources</a>
+          </div>
+
+          {/* BUTTON */}
+          <Link
+            href="/community"
+            className="
+              bg-[#1f3261]
+              text-white
+              px-5
+              py-3
+              rounded-full
+              font-semibold
+              hover:opacity-90
+              transition
+            "
+          >
+            Join The Movement
+          </Link>
+
+        </nav>
+
+        {/* HERO CONTENT */}
+        <section className="
+          flex-1
+          flex
+          items-center
+          px-6
+          md:px-12
+          lg:px-20
+        ">
+
+          <div className="max-w-2xl">
+
+            <h1 className="
+              text-[#1f3261]
+              font-bold
+              leading-tight
+
+              text-5xl
+              md:text-7xl
+            ">
+              Speak Freely.
+              <br />
+              Heal Deeply.
+            </h1>
+
+            <h2 className="
+              text-[#e7a07a]
+              italic
+              mt-4
+
+              text-4xl
+              md:text-6xl
+            ">
+              Be You.
+            </h2>
+
+            <p className="
+              mt-8
+              text-[#24345A]
+              text-lg
+              md:text-xl
+              leading-relaxed
+              max-w-xl
+            ">
+              Project HINGA is a safe space for every voice.
+              We believe freedom of expression is a powerful
+              step towards better mental health for all.
+            </p>
+
+            <Link
+              href="/community"
+              className="
+                inline-block
+                mt-10
+                bg-[#1f3261]
+                text-white
+                px-8
+                py-4
+                rounded-full
+                font-semibold
+                hover:opacity-90
+                transition
+              "
+            >
+              Share Your Voice
+            </Link>
+
+          </div>
+
+        </section>
 
       </div>
-
-      {/* ========================= */}
-      {/* DESKTOP NAVBAR */}
-      {/* ========================= */}
-
-      <div
-        className="
-          hidden md:flex
-          absolute
-          top-[3%]
-          left-1/2
-          -translate-x-1/2
-          gap-10
-          text-[#1f3261]
-          font-medium
-          z-20
-        "
-      >
-        <a href="#">Home</a>
-        <a href="#">About</a>
-        <a href="#">Mental Health</a>
-        <a href="#">Resources</a>
-      </div>
-
-      {/* DESKTOP JOIN BUTTON */}
-
-      <Link
-        href="/community"
-        className="
-          hidden md:flex
-          absolute
-          top-[2%]
-          right-[3%]
-          z-20
-
-          bg-[#1f3261]
-          text-white
-          px-8 py-4
-          rounded-full
-          font-semibold
-          hover:opacity-90
-          transition
-        "
-      >
-        Join The Movement
-      </Link>
-
-      {/* SHARE YOUR VOICE BUTTON */}
-
-      <Link
-        href="/community"
-        className="
-          absolute
-          z-20
-
-          bottom-[16%]
-          left-[8%]
-
-          md:bottom-[13%]
-          md:left-[5%]
-
-          bg-[#1f3261]
-          text-white
-
-          px-6 py-3
-          md:px-8 md:py-4
-
-          rounded-full
-          font-semibold
-
-          text-sm
-          md:text-lg
-
-          hover:opacity-90
-          transition
-        "
-      >
-        Share Your Voice
-      </Link>
 
     </main>
   );

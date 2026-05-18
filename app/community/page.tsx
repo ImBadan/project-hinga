@@ -1,47 +1,109 @@
 "use client";
 
+import { Post } from "@/types/community";
+import PostCard from "@/components/PostCard";
+import Navbar from "@/components/Navbar";
+import CreatePost from "@/components/CreatePost";
 import { useEffect, useState } from "react";
-import { supabase } from "@/lib/supabase";
+import {
+  fetchPosts,
+  createPost,
+  createAdvice,
+  likePost,
+  deletePost,
+} from "@/lib/community";
+
+const firstWords = [
+  "Silent",
+  "Soft",
+  "Quiet",
+  "Golden",
+  "Blue",
+  "Hopeful",
+  "Gentle",
+  "Calm",
+  "Bright",
+  "Kind",
+  "Peaceful",
+  "Warm",
+  "Brave",
+  "Dreamy",
+  "Happy",
+  "Tender",
+  "Shining",
+  "Lovely",
+  "Faithful",
+  "Sweet",
+];
+
+const secondWords = [
+  "Rain",
+  "Cloud",
+  "Soul",
+  "Heart",
+  "Sky",
+  "Mind",
+  "Bird",
+  "Moon",
+  "Light",
+  "Wave",
+  "Star",
+  "Dream",
+  "Breeze",
+  "Flower",
+  "Sun",
+  "River",
+  "Spirit",
+  "Ocean",
+  "Leaf",
+  "Flame",
+];
 
 export default function CommunityPage() {
   const [content, setContent] = useState("");
   const [nickname, setNickname] = useState("");
-  const [posts, setPosts] = useState<any[]>([]);
+
+  function generateNickname() {
+
+    const first =
+      firstWords[Math.floor(Math.random() * firstWords.length)];
+  
+    const second =
+      secondWords[Math.floor(Math.random() * secondWords.length)];
+  
+    const number = Math.floor(Math.random() * 100);
+  
+    const nickname = `${first}${second}${number}`;
+  
+    setNickname(nickname.slice(0, 12));
+  }
+  const [posts, setPosts] = useState<Post[]>([]);
   const [adviceContent, setAdviceContent] = useState("");
+  const [adviceNickname, setAdviceNickname] = useState("");
   const [adviceCategory, setAdviceCategory] = useState("💛 Comfort");
   const [openPostId, setOpenPostId] = useState<number | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [supportLoading, setSupportLoading] = useState(false);
 
-  async function fetchPosts() {
-    const { data } = await supabase
-      .from("posts")
-      .select(`
-        *,
-        advice (*)
-      `)
-      .order("created_at", { ascending: false });
+  async function refreshPosts() {
+
+    const data = await fetchPosts();
   
     if (data) {
       setPosts(data);
     }
   }
 
-  async function createPost() {
-    if (!content.trim()) return;
-
-    await supabase.from("posts").insert([
-      {
-        content,
-        nickname: nickname || "Anonymous",
-      },
-    ]);
-
-    setNickname("");
-    fetchPosts();
-  }
-
   useEffect(() => {
-    fetchPosts();
+
+    async function loadPosts() {
+  
+      await refreshPosts();
+    }
+  
+    loadPosts();
+  
   }, []);
 
   useEffect(() => {
@@ -52,16 +114,26 @@ export default function CommunityPage() {
     }
 
   }, []);
+
+  useEffect(() => {
+    const savedNickname = localStorage.getItem("hinga_nickname");
+  
+    if (savedNickname) {
+      setNickname(savedNickname);
+    }
+  }, []);
+
+  useEffect(() => {
+    const savedNickname = localStorage.getItem("hinga_nickname");
+  
+    if (savedNickname) {
+      setAdviceNickname(savedNickname);
+    }
+  }, []);
+
   return (
     <main className="min-h-screen bg-[#F8F5EF] text-[#24345A] px-6 py-10">
-      <div className="absolute top-6 left-6 md:left-10 z-50">
 
-        <img
-          src="/logo.png"
-          alt="Project Hinga"
-          className="w-28 md:w-40"
-        />
-      </div>
 
       <img
           src="/hero.png"
@@ -79,73 +151,7 @@ export default function CommunityPage() {
         />
         <div className="relative z-20">
 
-        {isAdmin && (
-        <button
-          onClick={() => {
-            localStorage.removeItem("hinga_admin");
-            window.location.reload();
-          }}
-            className="
-              fixed
-              top-6
-              right-6
-              bg-red-500
-              text-white
-              px-4
-              py-2
-              rounded-full
-              z-50
-              hover:opacity-90
-              transition
-            "
-          >
-            Logout
-          </button>
-        )}
-
-        <nav className="
-          w-full
-          flex
-          items-center
-          justify-center
-          gap-8
-          py-6
-
-          text-[#1f3261]
-          font-medium
-
-          backdrop-blur-sm
-        ">
-
-          <a href="/" className="hover:opacity-70 transition">
-            Home
-          </a>
-
-          <a href="#" className="hover:opacity-70 transition">
-            About Us
-          </a>
-
-          <a href="#" className="hover:opacity-70 transition">
-            Our Mission
-          </a>
-
-          <a href="#" className="hover:opacity-70 transition">
-            Mental Health
-          </a>
-
-          <a href="#" className="hover:opacity-70 transition">
-            Get Involved
-          </a>
-
-          <a href="#" className="hover:opacity-70 transition">
-            Resources
-          </a>
-
-          <a href="#" className="hover:opacity-70 transition">
-            Contact Us
-          </a>
-
-        </nav>
+        <Navbar isAdmin={isAdmin} />
 
           <div className="max-w-3xl mx-auto pt-20 md:pt-28">
 
@@ -164,215 +170,107 @@ export default function CommunityPage() {
             </div>
 
             {/* CREATE POST */}
-            <div className="bg-white/70 backdrop-blur-md border border-white/30 shadow-xl rounded-3xl p-6 mb-10">
+            <CreatePost
+              nickname={nickname}
+              setNickname={setNickname}
+              content={content}
+              setContent={setContent}
+              generateNickname={generateNickname}
+              loading={loading}
+              onPost={async () => {
 
-            <input
-              type="text"
-              value={nickname}
-              onChange={(e) => setNickname(e.target.value)}
-              placeholder="Nickname (optional)"
-              className="w-full mb-4 bg-white/60 rounded-2xl p-4 outline-none text-[#24345A]"
+                setLoading(true);
+                await createPost(content, nickname);
+
+                await new Promise((resolve) =>
+                  setTimeout(resolve, 300)
+                );
+
+                setContent("");
+
+                localStorage.setItem(
+                  "hinga_nickname",
+                  nickname || "Anonymous"
+                );
+
+                setNickname("");
+
+                await refreshPosts();
+                setLoading(false);
+              }}
             />
-
-              <textarea
-                value={content}
-                onChange={(e) => setContent(e.target.value)}
-                placeholder="What do you want to let out today?"
-                className="w-full h-36 bg-white/60 rounded-2xl p-4 outline-none resize-none text-[#24345A]"
-              />
-
-              <button
-                onClick={createPost}
-                className="mt-4 bg-[#24345A] text-white px-6 py-3 rounded-2xl font-semibold hover:opacity-90 transition"
-              >
-                Post Anonymously
-              </button>
-
-            </div>
 
             {/* POSTS */}
             <div className="space-y-6">
 
-              {posts.map((post) => (
+            {posts.map((post) => (
 
-                <div
-                  key={post.id}
-                  className="bg-white/70 backdrop-blur-md border border-white/30 shadow-lg rounded-3xl p-6 overflow-hidden"
-                >
+              <PostCard
+                key={post.id}
 
-                  {/* POST CONTENT */}
-                  <div className="mb-3">
+                post={post}
 
-                    <h3 className="font-semibold text-[#1f3261]">
-                      {post.nickname}
-                    </h3>
+                openPostId={openPostId}
+                setOpenPostId={setOpenPostId}
 
-                  </div>
+                adviceCategory={adviceCategory}
+                setAdviceCategory={setAdviceCategory}
 
-                  <p className="
-                    text-lg
-                    leading-relaxed
-                    break-words
-                    whitespace-pre-wrap
-                    overflow-hidden
-                  ">
-                    {post.content}
-                  </p>
-                  <div className="mt-6 flex items-center gap-6">
+                adviceNickname={adviceNickname}
+                setAdviceNickname={setAdviceNickname}
 
-                    {/* TOGGLE SUPPORT */}
-                    <button
-                      onClick={() =>
-                        setOpenPostId(openPostId === post.id ? null : post.id)
-                      }
-                      className="text-[#1f3261] font-medium text-sm hover:underline"
-                    >
-                      💬 View Support ({post.advice?.length || 0})
-                    </button>
+                adviceContent={adviceContent}
+                setAdviceContent={setAdviceContent}
 
-                  </div>
+                supportLoading={supportLoading}
 
-                {openPostId === post.id && (
-                  <>
+                onSendSupport={async (postId) => {
 
-                    {/* SUPPORT SECTION */}
-                    <div className="mt-6 space-y-3">
+                  if (!adviceContent.trim()) return;
+                
+                  setSupportLoading(true);
+                
+                  await createAdvice(
+                    postId,
+                    adviceCategory,
+                    adviceContent,
+                    adviceNickname
+                  );
+                
+                  await new Promise((resolve) =>
+                    setTimeout(resolve, 300)
+                  );
+                
+                  setAdviceContent("");
+                
+                  await refreshPosts();
+                
+                  setSupportLoading(false);
+                
+                }}
 
-                      <select
-                        value={adviceCategory}
-                        onChange={(e) => setAdviceCategory(e.target.value)}
-                        className="w-full bg-white rounded-2xl p-3 outline-none"
-                      >
-                        <option>💛 Comfort</option>
-                        <option>🧠 Advice</option>
-                        <option>🙏 Prayer</option>
-                        <option>🌱 Encouragement</option>
-                      </select>
+                onLike={async (postId, likes) => {
 
-                      <textarea
-                        value={adviceContent}
-                        onChange={(e) => setAdviceContent(e.target.value)}
-                        placeholder="Send support..."
-                        className="w-full bg-white rounded-2xl p-4 outline-none resize-none"
-                      />
+                  await likePost(
+                    postId,
+                    likes
+                  );
 
-                      <button
-                        onClick={async () => {
-                          if (!adviceContent.trim()) return;
+                  await refreshPosts();
 
-                          await supabase.from("advice").insert([
-                            {
-                              post_id: post.id,
-                              category: adviceCategory,
-                              content: adviceContent,
-                            },
-                          ]);
+                }}
 
-                          setAdviceContent("");
-                          fetchPosts();
-                        }}
-                        className="bg-pink-400 text-white px-5 py-3 rounded-2xl hover:opacity-90 transition"
-                      >
-                        Send Support
-                      </button>
+                isAdmin={isAdmin}
 
-                    </div>
+                onDelete={async (postId) => {
 
-                      {/* SUPPORT COMMENTS */}
-                      <div className="mt-6 space-y-3">
+                  await deletePost(postId);
 
-                      {post.advice?.map((item: any) => (
+                  await refreshPosts();
 
-                        <div
-                          key={item.id}
-                          className="
-                          bg-white
-                          border
-                          border-gray-200
-                          rounded-2xl
-                          p-4
-                          overflow-hidden
-                        "
-                        >
+                }}
 
-                          <p className="text-sm font-semibold text-[#233876] mb-2">
-                            {item.category}
-                          </p>
-
-                          <p className="
-                            text-gray-700
-                            break-words
-                            whitespace-pre-wrap
-                            overflow-hidden
-                            leading-relaxed
-                          ">
-                            {item.content}
-                          </p>
-
-                        </div>
-
-                      ))}
-
-                      </div>
-                    </>
-                  )}
-                  {/* FOOTER */}
-                  <div className="flex items-center justify-between mt-6">
-
-                    {/* LIKES */}
-                    <div className="flex items-center gap-3">
-
-                      <button
-                        onClick={async () => {
-                          await supabase
-                            .from("posts")
-                            .update({
-                              likes: (post.likes || 0) + 1,
-                            })
-                            .eq("id", post.id);
-
-                          fetchPosts();
-                        }}
-                        className="text-pink-500 hover:scale-110 transition"
-                      >
-                        ❤️
-                      </button>
-
-                      <span className="text-sm text-gray-500">
-                        {post.likes || 0}
-                      </span>
-
-                    </div>
-
-                    {/* DATE + DELETE */}
-                    <div className="flex items-center gap-4">
-
-                      <p className="text-xs text-gray-500">
-                        {new Date(post.created_at).toLocaleString()}
-                      </p>
-
-                      {isAdmin && (
-                        
-                    <button
-                      onClick={async () => {
-                        await supabase
-                          .from("posts")
-                          .delete()
-                          .eq("id", post.id);
-
-                        fetchPosts();
-                      }}
-                      className="text-red-500 text-sm hover:text-red-400"
-                    >
-                      Delete
-                    </button>
-                  )}
-
-                    </div>
-
-                  </div>
-
-                </div>
+              />
 
               ))}
 

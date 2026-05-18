@@ -64,12 +64,17 @@ export default function Home() {
           <a href="#">Contact Us</a>
         </div>
 
-        {/* DESKTOP BUTTON */}
-        <Link
+        {/* MOBILE MENU BUTTON */}
+        <button
+          className="md:hidden text-[#1f3261]"
+          onClick={() => setMenuOpen(!menuOpen)}
+        >
+          {menuOpen ? <X size={32} /> : <Menu size={32} />}
+        </button>
+        <a
           href="/community"
           className="
-            hidden md:block
-            bg-[#1f3261]
+            bg-[#24345A]
             text-white
             px-5
             py-3
@@ -79,17 +84,8 @@ export default function Home() {
             transition
           "
         >
-          Join The Movement
-        </Link>
-
-        {/* MOBILE MENU BUTTON */}
-        <button
-          className="md:hidden text-[#1f3261]"
-          onClick={() => setMenuOpen(!menuOpen)}
-        >
-          {menuOpen ? <X size={32} /> : <Menu size={32} />}
-        </button>
-
+          Share Your Voice
+        </a>
       </nav>
         {/* MOBILE MENU */}
         {menuOpen && (
@@ -134,20 +130,6 @@ export default function Home() {
             <a href="#" onClick={() => setMenuOpen(false)}>
               Resources
             </a>
-
-            <Link
-              href="/community"
-              className="
-                bg-[#1f3261]
-                text-white
-                px-8
-                py-4
-                rounded-full
-              "
-              onClick={() => setMenuOpen(false)}
-            >
-              Join The Movement
-            </Link>
 
           </div>
         )}
@@ -201,24 +183,6 @@ export default function Home() {
               We believe freedom of expression is a powerful
               step towards better mental health for all.
             </p>
-
-            <Link
-              href="/community"
-              className="
-                inline-block
-                mt-10
-                bg-[#1f3261]
-                text-white
-                px-8
-                py-4
-                rounded-full
-                font-semibold
-                hover:opacity-90
-                transition
-              "
-            >
-              Share Your Voice
-            </Link>
 
           </div>
 

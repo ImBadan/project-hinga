@@ -65,19 +65,14 @@ export default function Home() {
         </div>
 
         {/* MOBILE MENU BUTTON */}
-        <button
-          className="md:hidden text-[#1f3261]"
-          onClick={() => setMenuOpen(!menuOpen)}
-        >
-          {menuOpen ? <X size={32} /> : <Menu size={32} />}
-        </button>
         <a
           href="/community"
           className="
+            ml-12
             bg-[#24345A]
             text-white
-            px-5
-            py-3
+            px-2
+            py-2
             rounded-full
             font-semibold
             hover:opacity-90
@@ -86,52 +81,83 @@ export default function Home() {
         >
           Share Your Voice
         </a>
+        <button
+          className="md:hidden text-[#1f3261]"
+          onClick={() => setMenuOpen(!menuOpen)}
+        >
+          {menuOpen ? <X size={32} /> : <Menu size={32} />}
+        </button>
+        
       </nav>
         {/* MOBILE MENU */}
         {menuOpen && (
-          <div
+
+        <div
+          className="
+            fixed
+            top-0
+            right-0
+            h-full
+            w-[260px]
+
+            bg-white/80
+            backdrop-blur-xl
+
+            shadow-2xl
+
+            z-50
+
+            flex
+            flex-col
+
+            p-6
+
+            animate-slideIn
+          "
+        >
+
+          {/* CLOSE BUTTON */}
+          <button
+            onClick={() => setMenuOpen(false)}
             className="
-              md:hidden
-              fixed
-              top-0
-              left-0
-              w-full
-              h-screen
-              bg-[#f8f5ef]/95
-              backdrop-blur-sm
-              z-50
-              flex
-              flex-col
-              items-center
-              justify-center
-              gap-8
-              text-2xl
-              font-semibold
-              text-[#1f3261]
+              self-end
+              text-[#24345A]
+              text-4xl
+              mb-8
             "
           >
+            ×
+          </button>
 
-            <a href="#" onClick={() => setMenuOpen(false)}>
-              Home
-            </a>
+          {/* MENU LINKS */}
+          <div className="
+            flex
+            flex-col
+            gap-6
 
-            <a href="#" onClick={() => setMenuOpen(false)}>
-              About Us
-            </a>
+            text-[#24345A]
+            font-semibold
+            text-xl
+          ">
 
-            <a href="#" onClick={() => setMenuOpen(false)}>
-              Our Mission
-            </a>
+            <a href="/">Home</a>
 
-            <a href="#" onClick={() => setMenuOpen(false)}>
-              Mental Health
-            </a>
+            <a href="#">About Us</a>
 
-            <a href="#" onClick={() => setMenuOpen(false)}>
-              Resources
-            </a>
+            <a href="#">Our Mission</a>
+
+            <a href="#">Mental Health</a>
+
+            <a href="#">Get Involved</a>
+
+            <a href="#">Resources</a>
+
+            <a href="#">Contact Us</a>
 
           </div>
+
+        </div>
+
         )}
         {/* HERO CONTENT */}
         <section className="
@@ -145,15 +171,15 @@ export default function Home() {
             md:pt-20
           ">
 
-          <div className="max-w-2xl">
+          <div className="max-w-[250px] md:max-w-xl">
 
             <h1 className="
               text-[#1f3261]
               font-bold
               leading-tight
 
-              text-5xl
-              md:text-7xl
+              text-4xl
+              md:text-6xl
             ">
               Speak Freely.
               <br />
@@ -165,23 +191,25 @@ export default function Home() {
               italic
               mt-4
 
-              text-4xl
-              md:text-6xl
+              text-3xl
+              md:text-5xl
             ">
               Be You.
             </h2>
 
             <p className="
-              mt-8
+              mt-12
               text-[#24345A]
               text-lg
               md:text-xl
               leading-relaxed
               max-w-xl
             ">
-              Project HINGA is a safe space for every voice.
-              We believe freedom of expression is a powerful
-              step towards better mental health for all.
+              Project HINGA is a safe space 
+              for every voice. We believe 
+              freedom of expression is a 
+              powerful step towards better
+               mental health for all.
             </p>
 
           </div>
